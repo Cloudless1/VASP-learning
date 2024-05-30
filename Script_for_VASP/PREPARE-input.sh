@@ -1,39 +1,39 @@
 #!/bin/bash
 
-# ÉèÖÃÄ¿±êÂ·¾¶
+# è®¾ç½®ç›®æ ‡è·¯å¾„
 
 directory=$(pwd)
 
-# ÇÐ»»µ½±êÂ·¾¶
+# åˆ‡æ¢åˆ°æ ‡è·¯å¾„
 cd "$directory" || exit
 
-# ´¦Àí¸öÎÄ¼þ
+# å¤„ç†ä¸ªæ–‡ä»¶
 for file in "POSCAR"*.txt; do
-    # »ñÈ¡ÎÄ¼þÃû
+    # èŽ·å–æ–‡ä»¶å
     filename=$(basename -- "$file")
-    # »ñÈ¡µÚÒ»ÐÐÄÚÈÝ
+    # èŽ·å–ç¬¬ä¸€è¡Œå†…å®¹
     first_line=$(head -n 1 "$file")
 
-    # È¥³ý×îÒ»¸öÌØÊâ·ûºÅ
+    # åŽ»é™¤æœ€ä¸€ä¸ªç‰¹æ®Šç¬¦å·
     folder_name=$(echo "$first_line" | awk 'BEGIN{FS=OFS=" "} {sub(/.$/,"",$NF)}1' | tr ' ' '_' | sed 's/_$//')
 
     echo "file: $file"
     echo "folder_name: $folder_name"
 
-    # ÒÆ¶¯ÎÄ¼þÏàÓ¦µÄÎÄ¼þ¼Ð
+    # ç§»åŠ¨æ–‡ä»¶ç›¸åº”çš„æ–‡ä»¶å¤¹
     if [[ -n "$folder_name" ]]; then
         mkdir -p "$folder_name"
         mv "$file" "$folder_name/$filename"
         #prepare INCAR
-        cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/INCAR  "$folder_name/INCAR"  -r
+        cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/INCAR  "$folder_name/INCAR"  -r    # please input the path of INCAR 
         #prepare KPOINTS
-        cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/KPOINTS "$folder_name/KPOINTS"  -r
+        cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/KPOINTS "$folder_name/KPOINTS"  -r    # please input the path of KPOINTS
         #prepare POSCAR
         mv "$folder_name/$filename" "$folder_name/POSCAR"
         #modify the parameters SYSTEM in INCAR
         sed -i "1c  SYSTEM=$folder_name" "$folder_name/INCAR"
         #prepare submit scripts
-        cp /data/home/lizhenhua/data/yjr/all_scripts/submit_scripts/vasp/sub_vasp56.sh "$folder_name/sub_vasp56.sh"  -r
+        cp /data/home/lizhenhua/data/yjr/all_scripts/submit_scripts/vasp/sub_vasp56.sh "$folder_name/sub_vasp56.sh"  -r     # please input the path of sub_vasp56.sh
         #prepare POTCAR
         cd  "$folder_name"
         echo -e "103" | vaspkit   > POTCAR.log
@@ -41,5 +41,5 @@ for file in "POSCAR"*.txt; do
     fi
 done
 
-cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/sub-vasp+.sh "$directory/sub-vasp+.sh"  -r
+cp /data/home/lizhenhua/data/yjr/all_scripts/other_scripts/sub-vasp+.sh "$directory/sub-vasp+.sh"  -r  # please input the path of sub-vasp+.sh
 ls *
