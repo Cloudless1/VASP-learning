@@ -1,26 +1,26 @@
 #!/bin/bash
-
-# 设置目标路径
+# Please prepare the input files for the VASP calculation task, INCAR, KPOINTS, sub_vasp56.sh (which is Submit script), sub-vasp+.sh (which is Batch submit scripts)
+# Set target path
 
 directory=$(pwd)
 
-# 切换到标路径
+# Switch to target path
 cd "$directory" || exit
 
-# 处理个文件
+# handle each files
 for file in "POSCAR"*.txt; do
-    # 获取文件名
+    # Read file name
     filename=$(basename -- "$file")
-    # 获取第一行内容
+    # Read the first line of content
     first_line=$(head -n 1 "$file")
 
-    # 去除最一个特殊符号
+    # Remove the last special symbol
     folder_name=$(echo "$first_line" | awk 'BEGIN{FS=OFS=" "} {sub(/.$/,"",$NF)}1' | tr ' ' '_' | sed 's/_$//')
 
     echo "file: $file"
     echo "folder_name: $folder_name"
 
-    # 移动文件相应的文件夹
+    # Copy input files to the corresponding folder
     if [[ -n "$folder_name" ]]; then
         mkdir -p "$folder_name"
         mv "$file" "$folder_name/$filename"
