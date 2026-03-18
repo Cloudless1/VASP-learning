@@ -1,0 +1,13 @@
+COHPStartEnergy -15
+COHPEndEnergy 15
+basisSet pbeVaspFit2015
+includeOrbitals  s p d
+basisFunction H 1s
+basisFunction O 2s 2p
+basisFunction Al 3s 3p
+basisFunction Ni 3d 4s 4p
+# Al atom with O atom
+cohpBetween atom 39 and atom 25 orbitalWise
+# Ni atom with O atom
+cohpBetween atom 47 and atom 25 orbitalWise
+cohpBetween atom 48 and atom 25 orbitalWise

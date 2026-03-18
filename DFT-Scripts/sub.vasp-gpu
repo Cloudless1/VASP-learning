@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH --cpus-per-gpu 26
+#SBATCH --gpus 4
+#SBATCH -J ceshi
+#SBATCH -p gpu
+# 打印任务信息
+echo "Starting job $SLURM_JOB_ID at " `date`
+echo "SLURM_SUBMIT_DIR is $SLURM_SUBMIT_DIR"
+echo "Running on nodes: $SLURM_NODELIST"
+
+# 执行任务
+## 载入vasp
+module load VASP/6.4.2-gpu
+mpirun -np 4 vasp_gam > vasp.out 2>vasp.err
+
+# 任务结束
+echo "Job $SLURM_JOB_ID done at " `date`
+
